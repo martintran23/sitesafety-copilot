@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ArchitectureSpecsView from "@/components/ArchitectureSpecsView";
 import Footer from "@/components/Footer";
 import HazardSidebar from "@/components/HazardSidebar";
@@ -35,6 +35,11 @@ export default function Home() {
   const [showLabels, setShowLabels] = useState(true);
   const [dimBackground, setDimBackground] = useState(true);
 
+  // Auto-load first photorealistic preset on mount
+  useEffect(() => {
+    handleSelectPreset(PRESET_SCENARIOS[0]);
+  }, []);
+
   // Dynamically recalculate risk score and bands as hazards are resolved on-site
   const remediatedRisk = useMemo(() => {
     if (!result) return null;
@@ -49,7 +54,7 @@ export default function Home() {
   }
 
   function onFileChange(next: File | null) {
-    if (imageUrl && !imageUrl.startsWith("/presets/")) {
+    if (imageUrl && !imageUrl.startsWith("/presets/") && !imageUrl.startsWith("/demo/")) {
       URL.revokeObjectURL(imageUrl);
     }
     setActivePresetId(null);
@@ -77,7 +82,10 @@ export default function Home() {
     try {
       const res = await fetch(preset.imagePath);
       const blob = await res.blob();
-      const presetFile = new File([blob], `${preset.id}.svg`, { type: "image/svg+xml" });
+      const isSvg = preset.imagePath.endsWith(".svg");
+      const extension = isSvg ? "svg" : "jpg";
+      const mimeType = isSvg ? "image/svg+xml" : "image/jpeg";
+      const presetFile = new File([blob], `${preset.id}.${extension}`, { type: mimeType });
       setFile(presetFile);
     } catch {
       setError("Failed to load preset scenario asset.");

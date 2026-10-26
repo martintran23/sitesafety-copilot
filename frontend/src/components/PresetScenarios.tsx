@@ -13,28 +13,31 @@ export interface PresetScenario {
 
 export const PRESET_SCENARIOS: PresetScenario[] = [
   {
-    id: "scaffold_ladder",
-    name: "Upper Deck & Ladder Access",
-    sector: "Sector 4 — Bay B",
+    id: "leading_edge",
+    name: "Upper Deck & Leading Edge",
+    sector: "Tower B — Level 7",
     tag: "Subparts M & X (Falls/Ladders)",
-    imagePath: "/presets/scaffold_ladder.svg",
-    defaultTranscript: "",
+    imagePath: "/demo/leading-edge.jpg",
+    defaultTranscript:
+      "Upper deck concrete floor has workers near the unprotected edge, uncovered core holes, and ladder.",
   },
   {
     id: "trench_pit",
     name: "Deep Trench Excavation & Spoil",
     sector: "Utility Station 12+50",
     tag: "Subpart P (Excavation Voice Boost)",
-    imagePath: "/presets/trench_excavation.svg",
-    defaultTranscript: "Check the trench excavation, workers digging near edge without shoring.",
+    imagePath: "/demo/trench.jpg",
+    defaultTranscript:
+      "Check the trench excavation, worker shoveling in six-foot cut without shoring or ladder egress.",
   },
   {
-    id: "scaffold_midrail",
-    name: "Supported Scaffold Perimeter",
+    id: "scaffold_facade",
+    name: "Supported Facade Scaffold",
     sector: "South Facade Elevation",
     tag: "Subpart L (Scaffolding Voice Boost)",
-    imagePath: "/presets/scaffold_ladder.svg",
-    defaultTranscript: "Scaffold framing on south elevation looks incomplete, mid-rail missing between planks.",
+    imagePath: "/demo/scaffold.jpg",
+    defaultTranscript:
+      "Scaffold framing on south elevation looks incomplete, mid-rail missing and gaps in plank decking.",
   },
 ];
 
