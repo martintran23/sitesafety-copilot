@@ -11,7 +11,7 @@ export interface DemoScene {
 /**
  * Hand-annotated demo scenes for the landing page. Boxes follow the same
  * contract as the API: [ymin, xmin, ymax, xmax], integers 0-1000.
- * Citations come from MASTER_PROMPT_CONTEXT.md only.
+ * Citations come from official OSHA 29 CFR 1926 standards.
  */
 export const DEMO_SCENES: DemoScene[] = [
   {
@@ -22,48 +22,48 @@ export const DEMO_SCENES: DemoScene[] = [
     hazards: [
       {
         id: "d1_edge",
-        title: "Unprotected leading edge",
+        title: "Unprotected perimeter edge",
         severity: "CRITICAL",
         severity_weight: 35,
         osha_citation: "29 CFR 1926.501(b)(1)",
         description:
-          "Worker walking an unprotected slab edge well above 6 feet with no guardrail, net or arrest system.",
+          "Worker in high-vis vest stands near an unprotected floor edge with no guardrails, safety nets, or personal fall arrest system.",
         corrective_action:
-          "Stop work at the edge. Install a guardrail system or tie off to a 5,000 lb anchorage.",
-        box_2d: [230, 560, 560, 880],
-        confidence: 0.94,
+          "Halt work at the perimeter. Install a standard 42-inch guardrail system or require personal fall arrest tied to a 5,000 lb anchorage.",
+        box_2d: [145, 600, 760, 730],
+        confidence: 0.95,
         audio_response_script:
-          "Critical fall hazard at the leading edge. Fall protection is required above six feet under 1926.501. Install a guardrail or tie off before anyone returns.",
+          "Critical fall hazard at the slab edge. OSHA 1926.501 requires guardrails or tie-off above six feet. Stop work at the perimeter until protection is installed.",
       },
       {
         id: "d1_hole",
-        title: "Uncovered floor openings",
+        title: "Uncovered slab penetration with rebar",
         severity: "CRITICAL",
-        severity_weight: 30,
+        severity_weight: 32,
         osha_citation: "29 CFR 1926.501(b)(4)",
         description:
-          "Open slab penetrations and rebar mat with no covers or perimeter protection.",
+          "Open square concrete penetration with exposed steel rebar rods, creating an imminent fall-through and impalement hazard.",
         corrective_action:
-          "Cover and secure each opening, or erect a guardrail around the penetration.",
-        box_2d: [490, 0, 840, 465],
-        confidence: 0.87,
+          "Securely cover and label the floor opening with material supporting twice the intended load, and install impalement caps on all exposed rebar.",
+        box_2d: [455, 247, 930, 603],
+        confidence: 0.92,
         audio_response_script:
-          "Open floor holes on the deck. Cover or guard every opening under 1926.501. Secure the covers before the next pour.",
+          "Imminent danger at the open floor hole. Concrete penetrations must be covered under 1926.501, and rebar capped under 1926.701. Secure a cover immediately.",
       },
       {
         id: "d1_ladder",
-        title: "Ladder not extended above landing",
+        title: "Ladder rails not extended 3 ft",
         severity: "HIGH",
-        severity_weight: 24,
+        severity_weight: 22,
         osha_citation: "29 CFR 1926.1053(b)(1)",
         description:
-          "Portable ladder ends at the deck surface instead of extending 3 feet above it.",
+          "Portable ladder resting against the concrete column has side rails ending flush at the deck instead of extending 36 inches above the landing.",
         corrective_action:
-          "Reposition the ladder so the side rails extend 36 inches above the landing and secure it.",
-        box_2d: [436, 500, 1000, 625],
-        confidence: 0.9,
+          "Extend side rails at least 3 feet above the upper landing surface and lash the top to prevent displacement during use.",
+        box_2d: [65, 715, 815, 860],
+        confidence: 0.89,
         audio_response_script:
-          "Ladder is too short for the landing. Rails must extend three feet above the deck under 1926.1053. Extend and lash it before anyone climbs.",
+          "Ladder setup violation against the pillar. Side rails must extend three feet above the landing under 1926.1053. Reposition and secure it before use.",
       },
     ],
   },
@@ -75,48 +75,48 @@ export const DEMO_SCENES: DemoScene[] = [
     hazards: [
       {
         id: "d2_trench",
-        title: "Trench with no protective system",
+        title: "Trench excavation lacking shoring",
         severity: "CRITICAL",
         severity_weight: 38,
         osha_citation: "29 CFR 1926.652(a)(1)",
         description:
-          "Crew working in a trench about 6 feet deep with vertical walls and no sloping, shoring or shield.",
+          "Worker shoveling inside a 6-foot deep trench with vertical un-sloped earthen walls without an approved trench shield or hydraulic shoring.",
         corrective_action:
-          "Evacuate the trench. Install a trench box or shoring before anyone re-enters.",
-        box_2d: [260, 275, 1000, 510],
-        confidence: 0.93,
+          "Evacuate worker immediately. Install an engineered trench box or slope sidewalls to permissible angle before anyone re-enters.",
+        box_2d: [208, 269, 970, 538],
+        confidence: 0.96,
         audio_response_script:
-          "Critical cave-in hazard. Trenches five feet or deeper need a protective system under 1926.652. Get everyone out and set the trench box.",
+          "Stop work immediately in the trench. A six-foot vertical cut requires cave-in protection under 1926.652. Evacuate the worker and set a trench box.",
       },
       {
         id: "d2_spoil",
-        title: "Spoil pile at the trench edge",
+        title: "Spoil pile on the excavation lip",
         severity: "HIGH",
         severity_weight: 25,
         osha_citation: "29 CFR 1926.651(j)(2)",
         description:
-          "Excavated material is stacked against the lip, adding load and a rolling hazard.",
+          "Excavated rocks, dirt, and boulders are piled directly on the trench edge with zero clearance, posing severe surcharge load and roll-in hazards.",
         corrective_action:
-          "Move the spoil at least 2 feet back from the edge or install retaining barriers.",
-        box_2d: [40, 465, 650, 1000],
-        confidence: 0.86,
+          "Relocate the spoil pile at least 2 feet back from the trench lip or install retaining barriers to keep material from falling into the cut.",
+        box_2d: [40, 516, 540, 980],
+        confidence: 0.91,
         audio_response_script:
-          "Spoil pile is on the trench lip. Keep it two feet back under 1926.651. Move it before work continues.",
+          "Spoil pile violation on the right embankment. Excavated dirt must stay at least two feet back from the lip under 1926.651. Move the spoil back now.",
       },
       {
         id: "d2_egress",
-        title: "No means of egress",
+        title: "No egress ladder within 25 ft",
         severity: "HIGH",
         severity_weight: 22,
         osha_citation: "29 CFR 1926.651(c)(2)",
         description:
-          "No ladder, stairway or ramp within 25 feet of lateral travel for workers in the trench.",
+          "Trench deeper than 4 feet has no ladder, ramp, or stairway provided within 25 feet of lateral travel for rapid emergency escape.",
         corrective_action:
-          "Place a ladder extending 3 feet above grade within 25 feet of every worker.",
-        box_2d: [480, 337, 850, 472],
-        confidence: 0.82,
+          "Place a ladder extending 3 feet above ground surface within 25 feet of lateral travel of the worker's station.",
+        box_2d: [480, 345, 865, 472],
+        confidence: 0.88,
         audio_response_script:
-          "No way out of the trench. Egress is required within twenty-five feet under 1926.651. Place a ladder now.",
+          "No safe escape route from the excavation. Trenches over four feet deep require an egress ladder within twenty-five feet under 1926.651. Place a ladder now.",
       },
     ],
   },
@@ -128,48 +128,48 @@ export const DEMO_SCENES: DemoScene[] = [
     hazards: [
       {
         id: "d3_fall",
-        title: "Scaffold work above 10 ft",
+        title: "Unprotected scaffold work >10 ft",
         severity: "CRITICAL",
-        severity_weight: 32,
+        severity_weight: 35,
         osha_citation: "29 CFR 1926.451(g)(1)",
         description:
-          "Crew stacking block on an upper platform without a complete fall protection system.",
+          "Worker performing tasks on an elevated scaffold platform more than 10 feet above ground without complete guardrails or personal fall arrest.",
         corrective_action:
-          "Halt work on the platform until guardrails or personal fall arrest are complete.",
-        box_2d: [235, 420, 510, 800],
-        confidence: 0.88,
+          "Halt work on the upper tier until complete perimeter guardrails are installed or worker is tied off to an engineered anchorage.",
+        box_2d: [140, 585, 490, 690],
+        confidence: 0.93,
         audio_response_script:
-          "Fall protection gap on the upper platform. Scaffolds above ten feet need guardrails or arrest under 1926.451. Complete it before loading block.",
+          "Fall hazard on the upper scaffold platform. Scaffolds above ten feet require full guardrails or fall arrest under 1926.451. Halt work until secured.",
       },
       {
         id: "d3_rail",
-        title: "Mid-rail missing",
+        title: "Missing guardrail mid-rails",
         severity: "HIGH",
-        severity_weight: 26,
+        severity_weight: 25,
         osha_citation: "29 CFR 1926.451(g)(4)",
         description:
-          "Guardrail run is incomplete; no mid-rail halfway between top rail and platform.",
+          "Scaffold guardrail perimeter lacks intermediate mid-rails halfway between the top rail and the platform surface, leaving open fall gaps.",
         corrective_action:
-          "Install mid-rails halfway between the top rail and the platform before work resumes.",
-        box_2d: [390, 170, 640, 700],
-        confidence: 0.8,
+          "Install mid-rails approximately halfway between the top guardrail (38-45 inches) and the walking deck along all open sides.",
+        box_2d: [325, 76, 535, 592],
+        confidence: 0.87,
         audio_response_script:
-          "Mid-rail is missing on the guardrail. Install it halfway between top rail and deck under 1926.451. Then clear the platform for use.",
+          "Missing mid-rails along the scaffold run. Mid-rails must be installed halfway between top rail and deck under 1926.451 before crew access.",
       },
       {
         id: "d3_plank",
-        title: "Incomplete platform decking",
+        title: "Incompletely planked deck gaps",
         severity: "HIGH",
         severity_weight: 22,
         osha_citation: "29 CFR 1926.451(b)(1)",
         description:
-          "Lower platform has gaps between planks, creating a fall-through and trip hazard.",
+          "Lower platform walkway has missing planks and open gaps between boards, creating serious trip and fall-through hazards.",
         corrective_action:
-          "Fully plank the platform and close the gaps before anyone walks it.",
-        box_2d: [755, 150, 900, 930],
-        confidence: 0.78,
+          "Fully plank all working levels between the uprights and guardrail supports, with no spaces between planks greater than 1 inch.",
+        box_2d: [650, 152, 985, 868],
+        confidence: 0.84,
         audio_response_script:
-          "Gaps in the scaffold decking. Platforms must be fully planked under 1926.451. Close the gaps before use.",
+          "Gaps in the scaffold walkway. Working platforms must be fully planked under 1926.451. Lay full scaffold planks before anyone steps on the tier.",
       },
     ],
   },
