@@ -1,0 +1,46 @@
+{
+  "overall_risk_score": 73,
+  "risk_level": "HIGH",
+  "hazards": [
+    {
+      "id": "hzd_001",
+      "title": "Unprotected leading edge",
+      "severity": "CRITICAL",
+      "severity_weight": 35,
+      "osha_citation": "29 CFR 1926.501(b)(1)",
+      "description": "Worker exposed at unprotected side/edge greater than 6 feet above a lower level.",
+      "corrective_action": "Install a guardrail system or personal fall arrest before continuing work.",
+      "box_2d": [120, 340, 680, 810],
+      "confidence": 0.92,
+      "audio_response_script": "Critical fall hazard at the leading edge. OSHA 1926.501 requires fall protection above six feet. Install a guardrail or personal fall arrest system immediately."
+    },
+    {
+      "id": "hzd_002",
+      "title": "Portable ladder not extended above landing",
+      "severity": "HIGH",
+      "severity_weight": 24,
+      "osha_citation": "29 CFR 1926.1053(b)(1)",
+      "description": "Access ladder does not extend at least 3 feet (36 inches) above the upper landing surface.",
+      "corrective_action": "Reposition or replace the ladder so side rails extend 36 inches above the landing and secure it against displacement.",
+      "box_2d": [450, 80, 920, 280],
+      "confidence": 0.88,
+      "audio_response_script": "High severity ladder hazard. 1926.1053 requires three feet of extension above the landing. Extend and secure the ladder before the next climb."
+    },
+    {
+      "id": "hzd_003",
+      "title": "Missing hard hat in active work zone",
+      "severity": "MEDIUM",
+      "severity_weight": 14,
+      "osha_citation": "29 CFR 1926.100(a)",
+      "description": "Personnel observed in an area with potential head injury from impact or falling objects without hard hats.",
+      "corrective_action": "Stop work in the zone until all crew members don compliant hard hats.",
+      "box_2d": [200, 520, 420, 700],
+      "confidence": 0.81,
+      "audio_response_script": "Medium PPE finding under 1926.100. Hard hats are required where head injury is possible. Issue helmets and resume only when the crew is protected."
+    }
+  ],
+  "audio_response_script": "Inspection complete. Overall risk score is seventy-three, high. Address the unprotected leading edge before resuming work.",
+  "mode": "mock",
+  "site_id": null,
+  "foreman_transcript_used": false
+}
