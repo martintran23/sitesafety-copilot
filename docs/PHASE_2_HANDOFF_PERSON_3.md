@@ -10,11 +10,13 @@
 ## 1. Executive Summary & Current State
 
 Person 2 has completed the full frontend application and backend contracts:
-- **Frontend App**: Next.js 16 + Tailwind CSS 4 on `http://localhost:3000`. Fully functional, dark industrial aesthetic with zero browser emojis, custom SVG icons, and 4 dedicated views:
-  1. `Jobsite Inspector`: Normalized 0–1000 spatial bounding canvas, push-to-talk STT, dynamic hazard remediation tracking with live risk score drops (e.g. 73 down to 38), and synchronized audio walkthrough tour.
-  2. `OSHA 1926 Standards Store`: Searchable regulatory database for Title 29 CFR Part 1926 Subparts M, L, P, X, E, and K with penalty thresholds.
-  3. `Toolbox Talks & JHA Studio`: Morning briefing teleprompter, simulated audio waveform synthesizer, and 4-step narration structure guide.
-  4. `Spatial Specs & Architecture`: Mathematical coordinate contracts, severity formula, and pipeline visualization.
+- **Frontend App**: Next.js 16 + Tailwind CSS 4 on `http://localhost:3000`. Fully functional, dark industrial aesthetic with zero browser emojis, custom SVG icons, structured into:
+  - **Landing Page (`/`)**: Cinematic blueprint hero with automated looping vision scan demo, real-time risk score ticker, OSHA subparts trust strip, 3-step capture-to-briefing workflow, interactive hazard sandbox canvas, and feature breakdown.
+  - **Inspector Application (`/app`)**: 4 dedicated workspaces:
+    1. `Jobsite Inspector`: Normalized 0–1000 spatial bounding canvas, push-to-talk STT, dynamic hazard remediation tracking with live risk score drops (e.g. 73 down to 38), and synchronized audio walkthrough tour.
+    2. `OSHA 1926 Standards Store`: Searchable regulatory database for Title 29 CFR Part 1926 Subparts M, L, P, X, E, and K with penalty thresholds.
+    3. `Toolbox Talks & JHA Studio`: Morning briefing teleprompter, simulated audio waveform synthesizer, and 4-step narration structure guide.
+    4. `Spatial Specs & Architecture`: Mathematical coordinate contracts, severity formula, and pipeline visualization.
 - **Backend API**: FastAPI running on `http://127.0.0.1:8000` with Swagger docs at `http://127.0.0.1:8000/docs`.
   - `POST /api/v1/inspect` accepts multipart image, `audio_transcript`, `site_id`, and `mode` (`mock` | `live`).
   - `POST /api/v1/export/presentation` accepts export parameters and returns presentation video and companion JHA PDF metadata.
@@ -23,7 +25,7 @@ Person 2 has completed the full frontend application and backend contracts:
   - `8/8` Frontend `node --test` tests passing.
   - `0` TypeScript compilation errors (`npx tsc --noEmit`).
   - `0` ESLint errors or warnings (`npm run lint`).
-  - Validated with end-to-end browser subagent walkthrough.
+  - Validated with end-to-end browser subagent walkthrough across `/` and `/app`.
 
 ---
 
