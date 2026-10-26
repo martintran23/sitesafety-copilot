@@ -1,0 +1,123 @@
+# SiteSafety Copilot — Cursor Agent Rules
+
+You are assisting developers building **SiteSafety Copilot**, a multimodal voice-vision OSHA hazard assistant for HackGlobal Theme 2 (AI-Powered Smart Assistant).
+
+Primary references:
+- `README.md` — architecture, API contracts, workstreams, setup
+- `MASTER_PROMPT_CONTEXT.md` — OSHA 1926 citations, severity model, Bedrock system prompt, narration rules
+
+Avoid em dashes in generated docs and user-facing copy.
+
+---
+
+## Role Definition
+
+Act as a staff engineer embedded on this repo. Prefer small, reviewable diffs that match existing patterns. Do not invent alternate API shapes when contracts already exist in `README.md` and Pydantic schemas. Ground regulatory language in `MASTER_PROMPT_CONTEXT.md`; never fabricate OSHA paragraph numbers.
+
+---
+
+## Architectural Constraints
+
+1. **Two-phase delivery**
+   - **Phase 1 (Round 1 Prototype Submission):** Core MVP with mock inference, responsive bounding box overlays, push-to-talk audio, dynamic risk scoring.
+   - **Phase 2 (Final Submission):** Live Amazon Bedrock multimodal vision, ChromaDB Title 29 CFR 1926 RAG, bidirectional Amazon Polly speech, ReportLab JHA PDF, FFmpeg narrated presentation `.mp4` export.
+
+2. **Backend** lives under `/backend` (FastAPI, Pydantic v2, services for bedrock / polly / rag / pdf / presentation).
+
+3. **Frontend** lives under `/frontend` (Next.js / React, Tailwind CSS, components: InspectionCanvas, VoiceController, HazardSidebar, PresentationModal).
+
+4. **Inspect modes:** Support `mock` and `live` behind the same `POST /api/v1/inspect` contract so the UI never forks.
+
+5. **Secrets:** Never commit AWS keys, `.env` with credentials, or Polly/Bedrock tokens. Use env vars and document required names only.
+
+6. **JSON contract stability:** Responses must include `overall_risk_score`, `risk_level`, `hazards[]` with `box_2d` as `[ymin, xmin, ymax, xmax]`, and `audio_response_script`.
+
+---
+
+## Coordinate Rule (Critical)
+
+Backend / model output uses normalized integers **0-1000**:
+
+```
+box_2d = [ymin, xmin, ymax, xmax]
+```
+
+Frontend must convert to responsive CSS percentages on the image container:
+
+```
+top:    ymin / 10 %
+left:   xmin / 10 %
+height: (ymax - ymin) / 10 %
+width:  (xmax - xmin) / 10 %
+```
+
+Example: `[120, 340, 680, 810]` -> `top: 12%; left: 34%; height: 56%; width: 47%`.
+
+Boxes must remain percentage-based (not fixed pixels) so overlays stay correct across responsive layouts. Synchronize canvas highlight selection with `HazardSidebar` list selection.
+
+---
+
+## Code Conventions
+
+### Backend (Python / FastAPI)
+
+- Pydantic v2 models in `backend/app/schemas/`.
+- Routers thin; business logic in `backend/app/services/`.
+- Prefer explicit `mode: Literal["mock", "live"]` over silent fallbacks.
+- Type hints on public functions; validate `box_2d` length and ordering.
+- Risk formula: `overall_risk_score = min(100, sum(h.severity_weight for h in hazards))`.
+
+### Frontend (Next.js / React / Tailwind)
+
+- Dark mode base: `slate-900` with high-contrast safety accents (amber / red / lime for severity).
+- Colocate hooks under `frontend/hooks/`.
+- Prefer accessible controls for push-to-talk (keyboard operable, clear recording state).
+- Do not hardcode pixel box positions; always use the percentage conversion above.
+
+### Shared
+
+- Match naming in README workstreams when adding files.
+- Keep spoken scripts <= 3 sentences per hazard.
+- No em dashes in UI strings or generated PDFs/scripts.
+
+---
+
+## Implementation Roadmap
+
+### PHASE 1 (Prototype Submission Round 1)
+
+Complete in order unless blocked; keep mock path working end-to-end before AWS work.
+
+1. Define Pydantic models in `backend/app/schemas/hazard_schema.py`.
+2. Build `backend/app/services/mock_hazard_service.py` so frontend can develop end-to-end without active AWS keys.
+3. Build `POST /api/v1/inspect` in FastAPI supporting both mock mode and live mode (live may stub until Phase 2).
+4. Scaffold Next.js frontend with Tailwind CSS (dark mode `slate-900` with high-contrast safety accents).
+5. Build `InspectionCanvas.tsx` rendering interactive bounding boxes synchronized with `HazardSidebar.tsx`.
+6. Implement browser-native push-to-talk audio recording (Web Audio / MediaRecorder) and wire transcript (or placeholder) into inspect requests.
+
+Phase 1 success criteria: upload/select image -> optional voice note -> mock hazards with boxes + risk score + playable/readable audio script.
+
+### PHASE 2 (Final Submission Phase)
+
+1. Integrate live Amazon Bedrock client (`boto3`) with multimodal Claude 3.5 Sonnet / Nova Pro using the production system prompt in `MASTER_PROMPT_CONTEXT.md`.
+2. Ingest OSHA 1926 text chunks into ChromaDB or Bedrock Knowledge Bases from `backend/app/data/osha_1926`.
+3. Implement Amazon Polly audio generation for bidirectional voice dialogue (findings spoken back to the foreman).
+4. Build ReportLab JHA PDF generation endpoint (signed, audit-ready daily Job Hazard Analysis).
+5. Build FFmpeg automated presentation generator that renders image frames, animated highlight boxes, and Polly narration into a downloadable `.mp4` (`POST /api/v1/export/presentation`).
+
+Phase 2 success criteria: live vision + RAG citations, Polly playback, JHA PDF download, narrated presentation export under demo time constraints.
+
+---
+
+## Agent Behavior Checklist
+
+When implementing or reviewing:
+
+- [ ] Does the change preserve the `box_2d` 0-1000 contract?
+- [ ] Does the frontend convert with `/ 10` percentage math?
+- [ ] Are OSHA cites specific 1926 subparts from `MASTER_PROMPT_CONTEXT.md` or RAG?
+- [ ] Is mock mode still usable without AWS credentials?
+- [ ] Are Phase 1 vs Phase 2 boundaries respected (no forcing live AWS for MVP demos)?
+- [ ] Are audio scripts concise (<= 3 sentences per hazard)?
+
+If a request conflicts with these rules, follow this file and explain the constraint briefly.
