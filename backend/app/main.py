@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.inspect import router as inspect_router
+from app.api.export import router as export_router
 
 app = FastAPI(
     title="SiteSafety Copilot API",
@@ -28,6 +29,8 @@ app.add_middleware(
 )
 
 app.include_router(inspect_router)
+app.include_router(export_router)
+
 
 
 @app.get("/")

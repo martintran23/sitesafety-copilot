@@ -19,7 +19,9 @@ ALLOWED_IMAGE_TYPES = {
     "image/png",
     "image/webp",
     "image/gif",
+    "image/svg+xml",
 }
+
 
 
 def _default_mode() -> Literal["mock", "live"]:
@@ -36,11 +38,17 @@ async def inspect(
 ) -> InspectResponse:
     effective_mode: Literal["mock", "live"] = mode or _default_mode()
 
-    content_type = (image.content_type or "").lower()
-    if content_type and content_type not in ALLOWED_IMAGE_TYPES:
+    raw_type = (image.content_type or "").lower()
+    content_type = raw_type.split(";")[0].strip()
+    is_svg = (
+        content_type in {"image/svg+xml", "image/svg", "text/xml", "application/xml"}
+        or (image.filename and image.filename.lower().endswith(".svg"))
+    )
+
+    if content_type and content_type not in ALLOWED_IMAGE_TYPES and not is_svg:
         raise HTTPException(
             status_code=400,
-            detail=f"Unsupported image type: {content_type}. Use JPEG, PNG, WebP, or GIF.",
+            detail=f"Unsupported image type: {content_type}. Use JPEG, PNG, WebP, GIF, or SVG.",
         )
 
     image_bytes = await image.read()

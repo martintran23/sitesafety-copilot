@@ -19,3 +19,19 @@ export async function inspectImage(
   }
   return res.json();
 }
+
+export async function exportPresentation(
+  payload: import("./types").ExportRequest,
+): Promise<import("./types").ExportResponse> {
+  const res = await fetch(`${API_URL}/api/v1/export/presentation`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Export failed (${res.status}) ${detail}`.trim());
+  }
+  return res.json();
+}
+

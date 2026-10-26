@@ -27,3 +27,36 @@ export interface InspectResponse {
   site_id: string | null;
   foreman_transcript_used: boolean;
 }
+
+export interface ExportRequest {
+  inspection_id?: string;
+  site_name: string;
+  foreman_name: string;
+  hazards: Hazard[];
+  include_narration: boolean;
+  output_format?: "mp4" | "pdf";
+}
+
+export interface ExportResponse {
+  download_url: string;
+  duration_seconds: number;
+  jha_pdf_url?: string;
+  status: "ready" | "processing" | "failed";
+}
+
+export type HazardStatus = "OPEN" | "STOP_WORK" | "RESOLVED";
+
+export interface HazardStatusUpdate {
+  status: HazardStatus;
+  remediationNote?: string;
+  updatedAt: string;
+}
+
+export type OshaSubpartKey = "ALL" | "SUBPART_M" | "SUBPART_L" | "SUBPART_P" | "SUBPART_X" | "SUBPART_E_K" | "OTHER";
+
+export interface SubpartMeta {
+  key: OshaSubpartKey;
+  label: string;
+  code: string;
+  title: string;
+}

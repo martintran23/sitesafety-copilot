@@ -65,3 +65,23 @@ def test_inspect_live_mode_returns_501():
     res = client.post("/api/v1/inspect", files=files, data=data)
     assert res.status_code == 501
     assert "Phase 2" in res.json()["detail"]
+
+
+def test_export_presentation_stub():
+    """Verify Phase 1 presentation export stub responds with valid metadata."""
+    payload = {
+        "inspection_id": "insp_001",
+        "site_name": "Sector 4 Pad",
+        "foreman_name": "Dave Foreman",
+        "hazards": [{"id": "h1"}, {"id": "h2"}],
+        "include_narration": True,
+        "output_format": "mp4",
+    }
+    res = client.post("/api/v1/export/presentation", json=payload)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "ready"
+    assert data["duration_seconds"] > 0
+    assert "Sector 4 Pad" in data["message"]
+    assert "download_url" in data
+
