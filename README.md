@@ -236,14 +236,17 @@ Point the frontend at `http://localhost:8000` via env (for example `NEXT_PUBLIC_
 
 ---
 
-## Team Workstreams
+## Team Workstreams & Handoffs
 
-| Workstream | Ownership |
-| --- | --- |
-| **Workstream 1** | Backend API, Pydantic schemas, and Bedrock multimodal pipeline. |
-| **Workstream 2** | Regulatory RAG vector store and OSHA 1926 chunking. |
-| **Workstream 3** | React inspection canvas, responsive percentage-based bounding box renderer, and push-to-talk audio. |
-| **Workstream 4** | ReportLab JHA PDF export, Amazon Polly synthesis, and FFmpeg narrated presentation compiler. |
+| Workstream | Ownership | Status |
+| --- | --- | --- |
+| **Workstream 1** | Backend API, Pydantic schemas, and contracts. | **DONE (Person 1 + 2)** |
+| **Workstream 2** | React spatial inspection canvas, voice STT, dynamic remediation, multi-view website. | **DONE (Person 2)** |
+| **Workstream 3** | Live Amazon Bedrock multimodal vision (Claude 3.5 Sonnet / Nova Pro). | **READY FOR PERSON 3** |
+| **Workstream 4** | ChromaDB OSHA 1926 Regulatory RAG vector store. | **READY FOR PERSON 3** |
+| **Workstream 5** | Amazon Polly speech synthesis, ReportLab JHA PDF, and FFmpeg presentation export. | **READY FOR PERSON 3** |
+
+> For full execution details and contracts, see **[PHASE_2_HANDOFF_PERSON_3.md](docs/PHASE_2_HANDOFF_PERSON_3.md)**.
 
 ---
 
