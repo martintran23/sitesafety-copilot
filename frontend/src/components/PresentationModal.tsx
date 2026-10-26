@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DocumentCheckIcon, PrinterIcon, VideoCameraIcon } from "./Icons";
 import { exportPresentation } from "@/lib/api";
 import { STATUS_STYLES } from "@/lib/severity";
 import type { ExportResponse, Hazard, HazardStatus } from "@/lib/types";
@@ -101,11 +102,11 @@ export default function PresentationModal({
             onClick={() => setActiveTab("video")}
             className={`flex items-center gap-2 border-b-2 px-4 py-2 text-xs font-bold transition ${
               activeTab === "video"
-                ? "border-sky-400 text-sky-400"
+                ? "border-amber-400 text-amber-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
-            <span>🎬</span>
+            <VideoCameraIcon className="h-4 w-4" />
             <span>Narrated Presentation Video (.mp4)</span>
           </button>
           <button
@@ -113,11 +114,11 @@ export default function PresentationModal({
             onClick={() => setActiveTab("jha")}
             className={`flex items-center gap-2 border-b-2 px-4 py-2 text-xs font-bold transition ${
               activeTab === "jha"
-                ? "border-sky-400 text-sky-400"
+                ? "border-amber-400 text-amber-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
-            <span>📋</span>
+            <DocumentCheckIcon className="h-4 w-4" />
             <span>OSHA JHA Audit Sheet (Print/PDF)</span>
           </button>
         </div>
@@ -379,16 +380,16 @@ export default function PresentationModal({
               onClick={handlePrintJha}
               className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-750"
             >
-              <span>🖨️</span>
+              <PrinterIcon className="h-4 w-4 text-slate-300" />
               <span>Print / Save JHA Sheet</span>
             </button>
             <button
               type="button"
               disabled={exporting || hazards.length === 0}
               onClick={handleExportVideo}
-              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-sky-400 to-sky-500 px-5 py-2 text-xs font-bold text-slate-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 shadow-md shadow-sky-500/20"
+              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-2 text-xs font-bold text-slate-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 shadow-md shadow-orange-500/20"
             >
-              <span>🎬</span>
+              <VideoCameraIcon className="h-4 w-4 text-slate-950" />
               <span>{exporting ? "Generating Package…" : "Export Video & JHA"}</span>
             </button>
           </div>

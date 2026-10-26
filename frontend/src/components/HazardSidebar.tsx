@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CheckCircleIcon, ShieldAlertIcon, SpeakerIcon, StopCircleIcon } from "./Icons";
 import { getSubpartKey, OSHA_SUBPARTS, SEVERITY_STYLES, STATUS_STYLES } from "@/lib/severity";
 import type { Hazard, HazardStatus, OshaSubpartKey, Severity } from "@/lib/types";
 
@@ -269,52 +270,55 @@ export default function HazardSidebar({
                     type="button"
                     title="Listen to spoken audio findings"
                     onClick={(e) => playHazardAudio(e, h)}
-                    className={`flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium transition ${
+                    className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-medium transition ${
                       isSpeaking
-                        ? "bg-sky-500/20 text-sky-300 ring-1 ring-sky-400/40"
+                        ? "bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/40"
                         : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     }`}
                   >
-                    <span>{isSpeaking ? "🔊" : "🔈"}</span>
+                    <SpeakerIcon className="h-3.5 w-3.5 text-amber-400" />
                     <span>{isSpeaking ? (isTouring ? "Touring" : "Speaking") : "Listen"}</span>
                   </button>
                 </div>
 
                 {/* Status action toggle buttons */}
                 <div className="mt-3 flex items-center gap-1.5 border-t border-slate-800/80 pt-2.5">
-                  <span className="text-[10px] font-semibold text-slate-400">Action:</span>
+                  <span className="text-[10px] font-semibold text-slate-400 mr-0.5">Action:</span>
                   <button
                     type="button"
                     onClick={(e) => handleStatusClick(e, h.id, "OPEN")}
-                    className={`rounded-md px-2 py-0.5 text-[10px] font-semibold transition ${
+                    className={`flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-semibold transition ${
                       status === "OPEN"
                         ? "bg-rose-500/20 text-rose-300 ring-1 ring-rose-500/40"
                         : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     }`}
                   >
-                    ⚠️ Open
+                    <ShieldAlertIcon className="h-3 w-3" />
+                    <span>Open</span>
                   </button>
                   <button
                     type="button"
                     onClick={(e) => handleStatusClick(e, h.id, "STOP_WORK")}
-                    className={`rounded-md px-2 py-0.5 text-[10px] font-semibold transition ${
+                    className={`flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-semibold transition ${
                       status === "STOP_WORK"
                         ? "bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/40"
                         : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     }`}
                   >
-                    🛑 Stop Work
+                    <StopCircleIcon className="h-3 w-3" />
+                    <span>Stop Work</span>
                   </button>
                   <button
                     type="button"
                     onClick={(e) => handleStatusClick(e, h.id, "RESOLVED")}
-                    className={`rounded-md px-2 py-0.5 text-[10px] font-semibold transition ${
+                    className={`flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-semibold transition ${
                       status === "RESOLVED"
                         ? "bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/40"
                         : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     }`}
                   >
-                    ✓ Corrected
+                    <CheckCircleIcon className="h-3 w-3" />
+                    <span>Corrected</span>
                   </button>
                 </div>
 

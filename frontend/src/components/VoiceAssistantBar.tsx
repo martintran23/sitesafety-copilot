@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MicIcon, SparklesIcon, SpeakerIcon } from "./Icons";
 import type { Hazard } from "@/lib/types";
 
 interface Props {
@@ -180,15 +181,13 @@ export default function VoiceAssistantBar({
             onClick={toggleRecording}
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition shadow-sm shrink-0 ${
               isRecording
-                ? "animate-pulse bg-red-500 text-white shadow-red-500/30"
-                : "border border-slate-700 bg-slate-800 text-slate-200 hover:border-sky-500 hover:bg-slate-750"
+                ? "animate-pulse bg-rose-600 text-white shadow-rose-600/30 ring-2 ring-rose-400"
+                : "border border-slate-700 bg-slate-800 text-slate-200 hover:border-amber-400 hover:bg-slate-750"
             }`}
             title={hasSpeechRecognition ? "Click to speak foreman observation" : "Browser speech recognition"}
           >
-            <span
-              className={`h-2.5 w-2.5 rounded-full ${isRecording ? "bg-white" : "bg-red-400"}`}
-            />
-            {isRecording ? "Recording Audio…" : "Push-to-Talk (Mic)"}
+            <MicIcon className={`h-4 w-4 ${isRecording ? "text-white animate-pulse" : "text-amber-400"}`} />
+            <span>{isRecording ? "Listening to Audio…" : "Push-to-Talk (Mic)"}</span>
           </button>
 
           <div className="relative flex-1">
@@ -198,7 +197,7 @@ export default function VoiceAssistantBar({
               value={transcript}
               onChange={(e) => onTranscriptChange(e.target.value)}
               placeholder="Foreman observation (e.g. 'Check trench near west wall, digging without shoring')"
-              className="w-full rounded-xl border border-slate-700/80 bg-slate-950/70 px-3.5 py-2 text-xs text-slate-200 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-400"
+              className="w-full rounded-xl border border-slate-700/80 bg-slate-950/70 px-3.5 py-2 text-xs text-slate-200 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400 font-medium"
             />
             {transcript && (
               <button
@@ -229,28 +228,12 @@ export default function VoiceAssistantBar({
                 onClick={speakAssistantScript}
                 className={`flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-semibold transition ${
                   isPlayingBriefing
-                    ? "border-sky-400 bg-sky-500/20 text-sky-300 shadow-md shadow-sky-500/20"
+                    ? "border-amber-400 bg-amber-500/20 text-amber-300 shadow-md shadow-amber-500/20"
                     : "border-slate-700 bg-slate-800/80 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
                 }`}
               >
-                <span className="flex h-3 items-end gap-0.5">
-                  <span
-                    className={`w-0.5 rounded-full bg-sky-400 ${
-                      isPlayingBriefing ? "h-3 animate-bounce" : "h-1.5"
-                    }`}
-                  />
-                  <span
-                    className={`w-0.5 rounded-full bg-sky-400 ${
-                      isPlayingBriefing ? "h-2 animate-pulse" : "h-3"
-                    }`}
-                  />
-                  <span
-                    className={`w-0.5 rounded-full bg-sky-400 ${
-                      isPlayingBriefing ? "h-3 animate-bounce" : "h-2"
-                    }`}
-                  />
-                </span>
-                {isPlayingBriefing ? "Stop Briefing" : "Play Voice Briefing"}
+                <SpeakerIcon className="h-4 w-4 text-amber-400" />
+                <span>{isPlayingBriefing ? "Stop Briefing" : "Play Voice Briefing"}</span>
               </button>
 
               {/* Synchronized Walkthrough Tour Button */}
@@ -261,12 +244,12 @@ export default function VoiceAssistantBar({
                   onClick={startWalkthroughTour}
                   className={`flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition shadow-sm ${
                     isTourRunning
-                      ? "border-amber-400 bg-amber-500/20 text-amber-300 ring-2 ring-amber-400/30 shadow-amber-500/20"
-                      : "border-sky-500/60 bg-sky-950/60 text-sky-300 hover:bg-sky-900/60 hover:border-sky-400"
+                      ? "border-amber-400 bg-amber-500/25 text-amber-300 ring-2 ring-amber-400/40 shadow-amber-500/30"
+                      : "border-amber-500/60 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400"
                   }`}
                   title="Sequential spoken walkthrough with synchronized canvas highlights"
                 >
-                  <span>{isTourRunning ? "⏹" : "🎙️"}</span>
+                  <SparklesIcon className="h-4 w-4 text-amber-400" />
                   <span>
                     {isTourRunning
                       ? `Stop Tour (${tourIndex + 1}/${hazards.length})`
