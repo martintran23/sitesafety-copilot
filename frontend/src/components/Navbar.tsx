@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { DocumentCheckIcon, HardHatIcon } from "./Icons";
 
 export type ActiveTab = "inspector" | "standards" | "toolbox" | "specs";
@@ -51,6 +52,12 @@ export default function Navbar({
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 pl-4 border-l border-slate-800">
+            <Link
+              href="/"
+              className="rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-400 transition hover:bg-slate-900 hover:text-slate-200"
+            >
+              &larr; Home
+            </Link>
             <button
               type="button"
               onClick={() => onTabChange("inspector")}

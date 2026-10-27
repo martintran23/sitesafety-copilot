@@ -15,131 +15,209 @@ def _base_hazards() -> list[Hazard]:
     return [
         Hazard(
             id="hzd_001",
-            title="Unprotected leading edge",
+            title="Unprotected perimeter edge",
             severity=Severity.CRITICAL,
             severity_weight=35,
             osha_citation="29 CFR 1926.501(b)(1)",
             description=(
-                "Worker exposed at unprotected side/edge greater than 6 feet "
-                "above a lower level."
+                "Worker in high-vis vest stands near an unprotected floor edge with no "
+                "guardrails, safety nets, or personal fall arrest system."
             ),
             corrective_action=(
-                "Install a guardrail system or personal fall arrest before "
-                "continuing work."
+                "Halt work at the perimeter. Install a standard 42-inch guardrail system "
+                "or require personal fall arrest tied to a 5,000 lb anchorage."
             ),
-            box_2d=[120, 340, 680, 810],
-            confidence=0.92,
+            box_2d=[145, 600, 760, 730],
+            confidence=0.95,
             audio_response_script=(
-                "Critical fall hazard at the leading edge. "
-                "OSHA 1926.501 requires fall protection above six feet. "
-                "Install a guardrail or personal fall arrest system immediately."
+                "Critical fall hazard at the slab edge. OSHA 1926.501 requires guardrails "
+                "or tie-off above six feet. Stop work at the perimeter until protection is installed."
             ),
         ),
         Hazard(
             id="hzd_002",
-            title="Portable ladder not extended above landing",
-            severity=Severity.HIGH,
-            severity_weight=24,
-            osha_citation="29 CFR 1926.1053(b)(1)",
+            title="Uncovered slab penetration with rebar",
+            severity=Severity.CRITICAL,
+            severity_weight=32,
+            osha_citation="29 CFR 1926.501(b)(4)",
             description=(
-                "Access ladder does not extend at least 3 feet (36 inches) "
-                "above the upper landing surface."
+                "Open square concrete penetration with exposed steel rebar rods, creating an "
+                "imminent fall-through and impalement hazard."
             ),
             corrective_action=(
-                "Reposition or replace the ladder so side rails extend 36 inches "
-                "above the landing and secure it against displacement."
+                "Securely cover and label the floor opening with material supporting twice the "
+                "intended load, and install impalement caps on all exposed rebar."
             ),
-            box_2d=[450, 80, 920, 280],
-            confidence=0.88,
+            box_2d=[455, 247, 930, 603],
+            confidence=0.92,
             audio_response_script=(
-                "High severity ladder hazard. "
-                "1926.1053 requires three feet of extension above the landing. "
-                "Extend and secure the ladder before the next climb."
+                "Imminent danger at the open floor hole. Concrete penetrations must be covered "
+                "under 1926.501, and rebar capped under 1926.701. Secure a cover immediately."
             ),
         ),
         Hazard(
             id="hzd_003",
-            title="Missing hard hat in active work zone",
-            severity=Severity.MEDIUM,
-            severity_weight=14,
-            osha_citation="29 CFR 1926.100(a)",
+            title="Ladder rails not extended 3 ft",
+            severity=Severity.HIGH,
+            severity_weight=22,
+            osha_citation="29 CFR 1926.1053(b)(1)",
             description=(
-                "Personnel observed in an area with potential head injury from "
-                "impact or falling objects without hard hats."
+                "Portable ladder resting against the concrete column has side rails ending flush "
+                "at the deck instead of extending 36 inches above the landing."
             ),
             corrective_action=(
-                "Stop work in the zone until all crew members don compliant "
-                "hard hats."
+                "Extend side rails at least 3 feet above the upper landing surface and lash the "
+                "top to prevent displacement during use."
             ),
-            box_2d=[200, 520, 420, 700],
-            confidence=0.81,
+            box_2d=[65, 715, 815, 860],
+            confidence=0.89,
             audio_response_script=(
-                "Medium PPE finding under 1926.100. "
-                "Hard hats are required where head injury is possible. "
-                "Issue helmets and resume only when the crew is protected."
+                "Ladder setup violation against the pillar. Side rails must extend three feet "
+                "above the landing under 1926.1053. Reposition and secure it before use."
             ),
         ),
     ]
 
 
 def _transcript_boosted_hazards(transcript: str) -> list[Hazard]:
-    """Lightly adapt mock set when the foreman mentions common keywords."""
-    hazards = _base_hazards()
+    """Adapt mock set to match the specific scene identified in the foreman's voice note."""
     text = transcript.lower()
 
-    if "trench" in text or "excavation" in text:
-        hazards.append(
+    if "trench" in text or "excavation" in text or "digging" in text:
+        return [
             Hazard(
                 id="hzd_004",
-                title="Trench lacking protective system",
+                title="Trench excavation lacking shoring",
                 severity=Severity.CRITICAL,
                 severity_weight=38,
                 osha_citation="29 CFR 1926.652(a)(1)",
                 description=(
-                    "Transcript and scene context indicate a trench about 5 feet "
-                    "or deeper without an adequate protective system."
+                    "Worker shoveling inside a 6-foot deep trench with vertical un-sloped "
+                    "earthen walls without an approved trench shield or hydraulic shoring."
                 ),
                 corrective_action=(
-                    "Evacuate the trench and install sloping, shoring, or a "
-                    "trench box before re-entry."
+                    "Evacuate worker immediately. Install an engineered trench box or slope "
+                    "sidewalls to permissible angle before anyone re-enters."
                 ),
-                box_2d=[500, 200, 900, 750],
-                confidence=0.75,
+                box_2d=[208, 269, 970, 538],
+                confidence=0.96,
                 audio_response_script=(
-                    "Critical excavation hazard. "
-                    "1926.652 requires a protective system at five feet or deeper. "
-                    "Evacuate and protect the trench before anyone re-enters."
+                    "Stop work immediately in the trench. A six-foot vertical cut requires cave-in "
+                    "protection under 1926.652. Evacuate the worker and set a trench box."
                 ),
-            )
-        )
-
-    if "scaffold" in text:
-        hazards.append(
+            ),
             Hazard(
                 id="hzd_005",
-                title="Scaffold mid-rail missing",
+                title="Spoil pile on the excavation lip",
                 severity=Severity.HIGH,
-                severity_weight=26,
-                osha_citation="29 CFR 1926.451(g)(4)",
+                severity_weight=25,
+                osha_citation="29 CFR 1926.651(j)(2)",
                 description=(
-                    "Scaffold guardrail system appears incomplete; mid-rail not "
-                    "present between top rail and platform."
+                    "Excavated rocks, dirt, and boulders are piled directly on the trench edge "
+                    "with zero clearance, posing severe surcharge load and roll-in hazards."
                 ),
                 corrective_action=(
-                    "Install mid-rails approximately halfway between the top rail "
-                    "and platform before allowing work on the scaffold."
+                    "Relocate the spoil pile at least 2 feet back from the trench lip or install "
+                    "retaining barriers to keep material from falling into the cut."
                 ),
-                box_2d=[80, 100, 350, 600],
-                confidence=0.79,
+                box_2d=[40, 516, 540, 980],
+                confidence=0.91,
                 audio_response_script=(
-                    "High scaffold guardrail finding. "
-                    "1926.451 requires top rails and mid-rails. "
-                    "Install the missing mid-rail before crews climb."
+                    "Spoil pile violation on the right embankment. Excavated dirt must stay at least "
+                    "two feet back from the lip under 1926.651. Move the spoil back now."
                 ),
-            )
-        )
+            ),
+            Hazard(
+                id="hzd_006",
+                title="No egress ladder within 25 ft",
+                severity=Severity.HIGH,
+                severity_weight=22,
+                osha_citation="29 CFR 1926.651(c)(2)",
+                description=(
+                    "Trench deeper than 4 feet has no ladder, ramp, or stairway provided within "
+                    "25 feet of lateral travel for rapid emergency escape."
+                ),
+                corrective_action=(
+                    "Place a ladder extending 3 feet above ground surface within 25 feet of lateral "
+                    "travel of the worker's station."
+                ),
+                box_2d=[480, 345, 865, 472],
+                confidence=0.88,
+                audio_response_script=(
+                    "No safe escape route from the excavation. Trenches over four feet deep require "
+                    "an egress ladder within twenty-five feet under 1926.651. Place a ladder now."
+                ),
+            ),
+        ]
 
-    return hazards
+    if "scaffold" in text or "facade" in text:
+        return [
+            Hazard(
+                id="hzd_007",
+                title="Unprotected scaffold work >10 ft",
+                severity=Severity.CRITICAL,
+                severity_weight=35,
+                osha_citation="29 CFR 1926.451(g)(1)",
+                description=(
+                    "Worker performing tasks on an elevated scaffold platform more than 10 feet "
+                    "above ground without complete guardrails or personal fall arrest."
+                ),
+                corrective_action=(
+                    "Halt work on the upper tier until complete perimeter guardrails are installed "
+                    "or worker is tied off to an engineered anchorage."
+                ),
+                box_2d=[140, 585, 490, 690],
+                confidence=0.93,
+                audio_response_script=(
+                    "Fall hazard on the upper scaffold platform. Scaffolds above ten feet require "
+                    "full guardrails or fall arrest under 1926.451. Halt work until secured."
+                ),
+            ),
+            Hazard(
+                id="hzd_008",
+                title="Missing guardrail mid-rails",
+                severity=Severity.HIGH,
+                severity_weight=25,
+                osha_citation="29 CFR 1926.451(g)(4)",
+                description=(
+                    "Scaffold guardrail perimeter lacks intermediate mid-rails halfway between "
+                    "the top rail and the platform surface, leaving open fall gaps."
+                ),
+                corrective_action=(
+                    "Install mid-rails approximately halfway between the top guardrail (38-45 inches) "
+                    "and the walking deck along all open sides."
+                ),
+                box_2d=[325, 76, 535, 592],
+                confidence=0.87,
+                audio_response_script=(
+                    "Missing mid-rails along the scaffold run. Mid-rails must be installed halfway "
+                    "between top rail and deck under 1926.451 before crew access."
+                ),
+            ),
+            Hazard(
+                id="hzd_009",
+                title="Incompletely planked deck gaps",
+                severity=Severity.HIGH,
+                severity_weight=22,
+                osha_citation="29 CFR 1926.451(b)(1)",
+                description=(
+                    "Lower platform walkway has missing planks and open gaps between boards, "
+                    "creating serious trip and fall-through hazards."
+                ),
+                corrective_action=(
+                    "Fully plank all working levels between the uprights and guardrail supports, "
+                    "with no spaces between planks greater than 1 inch."
+                ),
+                box_2d=[650, 152, 985, 868],
+                confidence=0.84,
+                audio_response_script=(
+                    "Gaps in the scaffold walkway. Working platforms must be fully planked under "
+                    "1926.451. Lay full scaffold planks before anyone steps on the tier."
+                ),
+            ),
+        ]
+
+    return _base_hazards()
 
 
 def run_mock_inspection(

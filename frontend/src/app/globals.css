@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a;
+  --background: #0b1020;
   --foreground: #f1f5f9;
+  --amber: #f5a524;
 }
 
 @theme inline {
@@ -12,8 +13,119 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Blueprint grid used behind landing sections */
+.bg-blueprint {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Hazard tape accent */
+.bg-hazard-stripe {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #f5a524 0 14px,
+    #0b1020 14px 28px
+  );
+}
+
+/* Slow push-in on the hero photo */
+@keyframes kenburns {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.14);
+  }
+}
+.animate-kenburns {
+  animation: kenburns 14s ease-out forwards;
+}
+
+/* Scan line sweeping top to bottom of the analysis frame */
+@keyframes scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+.animate-scan {
+  animation: scan 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Bounding box drawing itself in */
+@keyframes box-in {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-box-in {
+  animation: box-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-chip-in {
+  animation: chip-in 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-rise {
+  animation: rise 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-kenburns,
+  .animate-scan,
+  .animate-box-in,
+  .animate-chip-in,
+  .animate-rise {
+    animation: none;
+  }
 }
