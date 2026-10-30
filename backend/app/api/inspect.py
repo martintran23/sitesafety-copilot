@@ -61,14 +61,12 @@ async def inspect(
             site_id=site_id,
         )
 
-    await run_live_inspection(
+    return await run_live_inspection(
         image_bytes=image_bytes,
         content_type=content_type or None,
         audio_transcript=audio_transcript,
         site_id=site_id,
     )
-    # Unreachable until Phase 2 implements a real return
-    raise HTTPException(status_code=501, detail="Live mode not implemented.")
 
 
 @router.get("/health")
