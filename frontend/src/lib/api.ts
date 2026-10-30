@@ -2,6 +2,10 @@ import type { InspectResponse } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
 
+function resolveApiUrl(url: string): string {
+  return url.startsWith("/") ? `${API_URL}${url}` : url;
+}
+
 export async function inspectImage(
   image: File,
   opts: { audioTranscript?: string; siteId?: string; mode?: "mock" | "live" } = {},
@@ -32,6 +36,10 @@ export async function exportPresentation(
     const detail = await res.text().catch(() => "");
     throw new Error(`Export failed (${res.status}) ${detail}`.trim());
   }
-  return res.json();
+  const data: import("./types").ExportResponse = await res.json();
+  return {
+    ...data,
+    download_url: resolveApiUrl(data.download_url),
+    jha_pdf_url: data.jha_pdf_url ? resolveApiUrl(data.jha_pdf_url) : data.jha_pdf_url,
+  };
 }
-

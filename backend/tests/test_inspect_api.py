@@ -1,5 +1,7 @@
 """API integration tests for /api/v1/inspect and /api/v1/health."""
 
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -57,18 +59,30 @@ def test_inspect_mock_mode_with_transcript():
     assert any("1926.652" in c for c in citations)
 
 
-def test_inspect_live_mode_returns_501():
-    """Live mode returns 501 until Phase 2 Bedrock implementation."""
+def test_inspect_live_mode_requires_bedrock_when_not_configured(monkeypatch):
+    """Live mode delegates to the Phase 2 service instead of the old 501 stub."""
+    from fastapi import HTTPException
+
+    async def unavailable(**kwargs):
+        raise HTTPException(status_code=503, detail="Live inspection requires configured Bedrock.")
+
+    monkeypatch.setattr("app.api.inspect.run_live_inspection", unavailable)
     files = {"image": ("tiny.png", b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR", "image/png")}
     data = {"mode": "live"}
 
     res = client.post("/api/v1/inspect", files=files, data=data)
-    assert res.status_code == 501
-    assert "Phase 2" in res.json()["detail"]
+    assert res.status_code == 503
+    assert "Bedrock" in res.json()["detail"]
 
 
-def test_export_presentation_stub():
-    """Verify Phase 1 presentation export stub responds with valid metadata."""
+def test_export_presentation_stub(monkeypatch, tmp_path: Path):
+    """Verify presentation export responds with valid metadata without polluting repo."""
+    monkeypatch.setattr("app.api.export.EXPORT_DIR", tmp_path)
+
+    async def no_polly(text: str, out: Path):
+        return None
+
+    monkeypatch.setattr("app.api.export.synthesize_speech", no_polly)
     payload = {
         "inspection_id": "insp_001",
         "site_name": "Sector 4 Pad",
@@ -84,4 +98,3 @@ def test_export_presentation_stub():
     assert data["duration_seconds"] > 0
     assert "Sector 4 Pad" in data["message"]
     assert "download_url" in data
-

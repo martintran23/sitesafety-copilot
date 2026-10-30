@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.api.inspect import router as inspect_router
 from app.api.export import router as export_router
+from app.api.inspect import router as inspect_router
 
 app = FastAPI(
     title="SiteSafety Copilot API",
@@ -31,6 +34,9 @@ app.add_middleware(
 app.include_router(inspect_router)
 app.include_router(export_router)
 
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/")
