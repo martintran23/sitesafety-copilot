@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import asyncio
+from contextlib import closing
 import os
 from pathlib import Path
 
@@ -11,7 +13,8 @@ async def synthesize_speech(text: str, output_path: Path) -> Path | None:
         import boto3
     except ImportError:
         return None
-    try:
+
+    def _synthesize() -> Path | None:
         client = boto3.client("polly", region_name=os.getenv("AWS_REGION", "us-east-1"))
         response = client.synthesize_speech(
             Text=text[:5000], OutputFormat="mp3", VoiceId=os.getenv("POLLY_VOICE_ID", "Matthew"), Engine="neural"
@@ -20,7 +23,11 @@ async def synthesize_speech(text: str, output_path: Path) -> Path | None:
         if stream is None:
             return None
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_bytes(stream.read())
+        with closing(stream):
+            output_path.write_bytes(stream.read())
         return output_path
+
+    try:
+        return await asyncio.to_thread(_synthesize)
     except Exception:
         return None

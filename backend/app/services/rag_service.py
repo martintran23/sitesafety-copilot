@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 CORPUS_DIR = Path(__file__).resolve().parents[1] / "data" / "osha_1926"
-CITATION_RE = re.compile(r"1926\.\d{3}(?:\([a-z]\)(?:\(\d+\))?)?")
+CITATION_RE = re.compile(r"1926\.\d{3,4}(?:\([a-z]\)(?:\(\d+\))?)?")
 
 
 @dataclass(frozen=True)

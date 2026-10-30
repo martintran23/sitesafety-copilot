@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 *.egg-info/
+backend/app/static/
 
 # Environment files
 .env

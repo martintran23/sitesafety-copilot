@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 from typing import Iterable
+from xml.sax.saxutils import escape
 
 from app.schemas.hazard_schema import Hazard
 
@@ -42,7 +43,14 @@ def generate_jha_pdf(
     story += [ppe_table, Spacer(1, 12), Paragraph("HAZARD IDENTIFICATION MATRIX", styles["Heading2"])]
     rows = [["#", "Hazard / description", "CFR", "Severity", "Corrective action", "Status"]]
     for index, hazard in enumerate(hazard_list, 1):
-        rows.append([str(index), Paragraph(f"{hazard.title}<br/>{hazard.description}", body), hazard.osha_citation, f"{hazard.severity.value} ({hazard.severity_weight})", Paragraph(hazard.corrective_action, body), "Open"])
+        rows.append([
+            str(index),
+            Paragraph(f"{escape(hazard.title)}<br/>{escape(hazard.description)}", body),
+            hazard.osha_citation,
+            f"{hazard.severity.value} ({hazard.severity_weight})",
+            Paragraph(escape(hazard.corrective_action), body),
+            "Open",
+        ])
     if not hazard_list:
         rows.append(["-", "No hazards detected", "-", "-", "Continue routine controls", "Clear"])
     table = Table(rows, colWidths=[0.28 * inch, 1.65 * inch, 1.1 * inch, 0.78 * inch, 2.35 * inch, 0.65 * inch], repeatRows=1)

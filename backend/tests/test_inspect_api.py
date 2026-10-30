@@ -1,5 +1,7 @@
 """API integration tests for /api/v1/inspect and /api/v1/health."""
 
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -73,8 +75,14 @@ def test_inspect_live_mode_requires_bedrock_when_not_configured(monkeypatch):
     assert "Bedrock" in res.json()["detail"]
 
 
-def test_export_presentation_stub():
-    """Verify Phase 1 presentation export stub responds with valid metadata."""
+def test_export_presentation_stub(monkeypatch, tmp_path: Path):
+    """Verify presentation export responds with valid metadata without polluting repo."""
+    monkeypatch.setattr("app.api.export.EXPORT_DIR", tmp_path)
+
+    async def no_polly(text: str, out: Path):
+        return None
+
+    monkeypatch.setattr("app.api.export.synthesize_speech", no_polly)
     payload = {
         "inspection_id": "insp_001",
         "site_name": "Sector 4 Pad",
@@ -90,4 +98,3 @@ def test_export_presentation_stub():
     assert data["duration_seconds"] > 0
     assert "Sector 4 Pad" in data["message"]
     assert "download_url" in data
-

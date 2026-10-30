@@ -15,6 +15,7 @@ from app.services.polly_service import synthesize_speech
 from app.services.presentation_service import compile_presentation
 
 router = APIRouter(prefix="/api/v1/export", tags=["export"])
+EXPORT_DIR = Path(__file__).resolve().parent.parent / "static" / "exports"
 
 
 class ExportPresentationRequest(BaseModel):
@@ -36,7 +37,7 @@ class ExportPresentationResponse(BaseModel):
 
 @router.post("/presentation", response_model=ExportPresentationResponse)
 async def export_presentation(req: ExportPresentationRequest) -> ExportPresentationResponse:
-    export_dir = Path(__file__).resolve().parent.parent / "static" / "exports"
+    export_dir = EXPORT_DIR
     export_id = re.sub(r"[^A-Za-z0-9_-]", "_", req.inspection_id or "demo")[:80] or "demo"
     hazards: list[Hazard] = []
     for raw in req.hazards:
